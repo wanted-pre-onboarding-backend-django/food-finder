@@ -3,22 +3,19 @@ name: OneT 이슈 템플릿
 about: "[OneT] 이슈 템플릿"
 title: ''
 labels: chore
-assignees: winkberry, hesshess, Jihyun-Choi, dollyishere
+assignees: dollyishere, hesshess, Jihyun-Choi, winkberry
 
 ---
 
-## 설명
-개발에 필요한 환경을 설정합니다.
+## 요구 사항
+- 구현하고자하는 작업에 대해 설명합니다.
 
-## 작업 내용
-- [x] 초기 django 프로젝트 생성
-- [x] swagger 설정
-- [x] pre-commit 설정
-  - [x] linter 설정
-  - [x] formatter 설정
-- [x] 개발환경 설정을 위한 README 작성
-- [x] BaseModel 설정
-- [x] Issues, PR template 설정
+## 작업 목록
+- [ ] 작업해야하는 사항에 대해 Task List를 작성합니다.
 
 ## 작업 마감일
-- 24.08.22 (목)
+- 24.08.00 (요일)
+
+### 아래 사항을 설정 후 Issues를 생성합니다. (완료 시 삭제)
+- [ ] Assignees: 아직 작업자가 할당되지 않았으면 생략합니다.
+- [ ] Labels: 해당 작업에 적합한 Labels를 추가합니다.
