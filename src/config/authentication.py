@@ -7,8 +7,6 @@ import jwt
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        print(request.headers)
-
         # Cookie에서 JWT 토큰 추출 ---> 요구사항과 같이 헤더에서 추출로 변경
         # token = request.COOKIES.get("jwt")
         token = request.headers.get("jwt")
