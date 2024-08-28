@@ -24,9 +24,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Feed Flow API",
+        title="Food Finder API",
         default_version="v1",
-        description="feed-flow-backend",
+        description="food-finder-backend",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="WantedPreOnboardingDjango@local.dev"),
         license=openapi.License(name="MIT License"),

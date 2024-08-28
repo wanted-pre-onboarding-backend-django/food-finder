@@ -1,6 +1,6 @@
-## Feed Flow
+## Food Finder
 
-**소셜 미디어 통합 Feed 서비스**
+**위치 기반 맛집 추천 웹 서비스**
 
 > 언어 및 프레임워크 : Python 3.10 & Django 5.0, DRF 3.15
 

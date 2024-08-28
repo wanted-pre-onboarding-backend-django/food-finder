@@ -8,8 +8,8 @@ django = "==5.0.7"
 djangorestframework = "==3.15.2"
 django-environ = "==0.11.2"
 drf-yasg = "==1.21.7"
-requests = "*"
-pyjwt = "*"
+requests = "2.32.3"
+pyjwt = "2.9.0"
 
 [dev-packages]
 flake8 = "==7.1.0"
