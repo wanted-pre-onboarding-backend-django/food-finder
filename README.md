@@ -25,6 +25,7 @@ SECRET_KEY=your-secret-key
 > pipenv run pre-commit install
 
 # 4. django 실행하기
+> src 폴더내에서 진행합니다
 > python manage.py migrate
 > python manage.py runserver
 ```
