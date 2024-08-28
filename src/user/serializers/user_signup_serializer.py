@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from user.models import User
 
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import password_validation
 
 
 class UserSignupSerializer(ModelSerializer):
@@ -14,5 +14,5 @@ class UserSignupSerializer(ModelSerializer):
 
     def validate_password(self, value):
         # 비밀번호 검증
-        validate_password(value)
+        password_validation.validate_password(value)
         return value

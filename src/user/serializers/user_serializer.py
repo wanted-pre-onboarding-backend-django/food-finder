@@ -30,3 +30,4 @@ class UserSerializer(serializers.ModelSerializer):
             "latitude": {"read_only": True},
             "longitude": {"read_only": True},
         }
+        

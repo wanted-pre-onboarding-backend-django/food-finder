@@ -31,3 +31,4 @@ class UserLogInAPIView(APIView):
             return Response({"token": token})
         else:
             raise AuthenticationFailed("아이디 또는 비밀번호가 잘못되었습니다.")
+        
