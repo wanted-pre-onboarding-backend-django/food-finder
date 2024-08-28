@@ -16,10 +16,15 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from user.views import (
+    UserSignupAPIView,
+    UserLogInAPIView,
+    UserLogOutAPIView,
+)
 
 
 schema_view = get_schema_view(
@@ -58,4 +63,8 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
+    path("users/", include("user.urls")),
+    path("signup/", UserSignupAPIView.as_view()),
+    path("login/", UserLogInAPIView.as_view()),
+    path("logout/", UserLogOutAPIView.as_view()),
 ]
