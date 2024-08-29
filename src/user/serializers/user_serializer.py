@@ -9,7 +9,6 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "account",
             "email",
-            "password",
             "is_active",
             "is_staff",
             "is_superuser",
@@ -20,14 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
             "longitude",
         ]
         extra_kwargs = {
-            "password": {"write_only": True},
+            "id": {"read_only": True},
             "is_active": {"read_only": True},
             "is_staff": {"read_only": True},
             "is_superuser": {"read_only": True},
             "created_at": {"read_only": True},
             "updated_at": {"read_only": True},
-            "is_lunch_rec_allowed": {"read_only": True},
-            "latitude": {"read_only": True},
-            "longitude": {"read_only": True},
         }
-        
