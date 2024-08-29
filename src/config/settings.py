@@ -34,16 +34,30 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+# Django default apps
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+
+# Apps defined within the project
+PROJECT_APPS = [
+    "user.apps.UserConfig",
+]
+
+# Apps from external packages
+PACKAGE_APPS = [
     "rest_framework",
     "drf_yasg",
 ]
+
+# Combine all apps into a single list
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + PACKAGE_APPS
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -127,3 +141,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Auth
+AUTH_USER_MODEL = "user.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "config.authentication.JWTAuthentication",
+    ]
+}
