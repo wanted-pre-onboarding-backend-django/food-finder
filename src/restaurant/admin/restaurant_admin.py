@@ -10,19 +10,19 @@ class RestaurantAdmin(admin.ModelAdmin):
         "name",
         "category",
         "status",
-        # "sigun",
+        "province",
         "road_addr",
         "rating",
     )
     list_filter = (
         "category",
         "status",
-        # "sigun",
+        "province",
     )
     search_fields = ("name", "road_addr", "lot_addr")
 
     fieldsets = (
-        (None, {"fields": ("name", "category", "status", "sigun")}),
+        (None, {"fields": ("name", "category", "status", "province")}),
         ("Location Information", {"fields": ("road_addr", "lot_addr", "lat", "lon")}),
         ("Additional Information", {"fields": ("rating",)}),
     )
