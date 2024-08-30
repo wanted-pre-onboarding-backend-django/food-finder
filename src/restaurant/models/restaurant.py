@@ -13,12 +13,17 @@ class Restaurant(BaseModel):
 
     class CategoryChoices(models.TextChoices):
         # CATEGORY 음식점 분류를 위한 초이스
-        CHINESE = ("Genrestrtfastfood", "중국식")
-        JAPANESE = ("Genrestrtjpnfood", "일식")
-        SOUP = ("Genrestrtsoup", "탕류(보신용)")
-        PUB = ("Genrestrtstandpub", "정종/대포집/소주방")
-        FAST_FOOD = ("Genrestrtchifood", "패스트푸드")
+        CHINESE = ("중국식", "중국식")
+        JAPANESE = ("일식", "일식")
+        SOUP = ("탕류(보신용)", "탕류(보신용)")
+        PUB = ("정종/대포집/소주방", "정종/대포집/소주방")
+        FAST_FOOD = ("패스트푸드", "패스트푸드")
 
+    unique_code = models.CharField(
+        max_length=64,  # SHA-256 해시의 16진수 문자열 길이
+        unique=True,  # 해시값이 유일해야 함
+        verbose_name="SHA-256 Hash Value",
+    )
     category = models.CharField(
         max_length=50,
         choices=CategoryChoices.choices,
@@ -66,10 +71,6 @@ class Restaurant(BaseModel):
     class Meta:
         """Meta definition for Restaurant."""
 
-        unique_together = (
-            "name",
-            "lot_addr",
-        )  # 가게명과 주소의 조합이 유일하게 유지됨
         verbose_name = "Restaurant"
         verbose_name_plural = "Restaurants"
         db_table = "restaurant"
