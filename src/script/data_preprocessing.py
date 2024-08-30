@@ -1,30 +1,38 @@
 import os
 import sys
-import math
 import json
 import asyncio
 import aiohttp
-import requests
 import django
 import environ
 import time
-from datetime import datetime
 import hashlib
 from pathlib import Path
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 from decimal import Decimal
 from tqdm.asyncio import tqdm_asyncio
 from asgiref.sync import sync_to_async
 from django.db import transaction
 
-from restaurant.models import Restaurant, RdRestaurant
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+env = environ.Env()
+env.read_env(f"{BASE_DIR}/.env")
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
+
+
+from restaurant.models import RdRestaurant, Restaurant
 from province.models import Province
 
 
 def hash_string(target_string):
     """
-    param으로 넘겨 받은 string 해싱 처리(sha256)
+    param으로 넘겨 받은 string 해싱 처리(sha512)
     :param target_string: 해시로 바꿀 string
+    :return: SHA-512 해시 문자열
     """
 
     # 해시 객체 생성
@@ -43,11 +51,12 @@ async def preprocess_restaurant_data(
     """
     맛집 raw data 전처리
     :param session: aiohttp.ClientSession
-    :return: 새로 restaruant 테이블에 추가할 데이터와 기존 데이터 업데이트할 데이터
+    :return: 새로 restaurant 테이블에 추가할 데이터와 기존 데이터 업데이트할 데이터
     """
     objects_to_update = []
     objects_to_create = []
     existing_restaurant_map = {}
+    unique_codes_set = set()  # 중복 방지를 위한 set
 
     # 현재 존재하는 데이터 가져오기
     raw_datas = await sync_to_async(list)(RdRestaurant.objects.all())
@@ -57,13 +66,13 @@ async def preprocess_restaurant_data(
     existing_restaurant_map = {r.unique_code: r for r in existing_restaurants}
 
     # 비동기적으로 처리할 작업 리스트
-    tasks = []
+    tasks = [
+        process_raw_data(raw_data, existing_restaurant_map, session, unique_codes_set)
+        for raw_data in raw_datas
+    ]
 
-    for raw_data in raw_datas:
-        tasks.append(process_raw_data(raw_data, existing_restaurant_map, session))
-
-    # 모든 비동기 처리 결과 완료 시까지 대기
-    results = await asyncio.gather(*tasks)
+    # tqdm_asyncio의 tqdm을 사용하여 진행 상황을 표시합니다.
+    results = await tqdm_asyncio.gather(*tasks, desc="Data Preprocessing")
 
     # 결과를 합쳐서 objects_to_create, objects_to_update에 추가
     for result in results:
@@ -74,15 +83,8 @@ async def preprocess_restaurant_data(
 
 
 async def process_raw_data(
-    raw_data, existing_restaurant_map, session
+    raw_data, existing_restaurant_map, session, unique_codes_set
 ) -> Tuple[List[Restaurant], List[Restaurant]]:
-    """
-    개별 raw_data를 처리하여 새로 생성하거나 업데이트할 데이터를 반환
-    :param raw_data: 개별 raw_data
-    :param existing_restaurant_map: 기존 음식점 데이터 맵
-    :param session: aiohttp.ClientSession
-    :return: 새로 생성할 데이터와 업데이트할 데이터
-    """
     objects_to_update = []
     objects_to_create = []
 
@@ -92,15 +94,11 @@ async def process_raw_data(
     default_lat = 0.0
     default_lon = 0.0
 
-    # 도로명 주소, 지번주소
-    road_addr = raw_data.get("refine_roadnm_addr", default_road_addr)
-    lot_addr = raw_data.get("refine_lotno_addr", default_lot_addr)
+    road_addr = getattr(raw_data, "refine_roadnm_addr") or default_road_addr
+    lot_addr = getattr(raw_data, "refine_lotno_addr") or default_lot_addr
+    lat = getattr(raw_data, "refine_wgs84_lat") or default_lat
+    lon = getattr(raw_data, "refine_wgs84_logt") or default_lon
 
-    # 위도, 경도
-    lat = raw_data.get("refine_wgs84_lat", default_lat)
-    lon = raw_data.get("refine_wgs84_logt", default_lon)
-
-    # 네 데이터 중 하나라도 null이면, kakao api 요청
     if (
         road_addr == default_road_addr
         and lot_addr == default_lot_addr
@@ -108,8 +106,6 @@ async def process_raw_data(
         and lon == default_lon
     ):
         request_addr = lot_addr or road_addr
-
-        # 데이터 중 null이었던 값만 불러온 값으로 update
         try:
             data = await fetch_address_info(session, request_addr)
             if data:
@@ -126,54 +122,52 @@ async def process_raw_data(
         except Exception as e:
             print(f"Error fetching address info: {e}")
 
-    # province 가져오기
     try:
         province = await sync_to_async(Province.objects.get)(city=lot_addr.split()[1])
     except Province.DoesNotExist:
-        # 없을 시 기본값 세팅
         province = await sync_to_async(Province.objects.first)()
         if not province:
             raise ValueError("No provinces data")
 
-    # unique 코드 제작 (음식점명 + 인허가일자 + 위치정보)
-    restaurant_name = raw_data.get("bizplc_nm", "사업장명")
-    licensg_de = convert_date(raw_data.get("licensg_de", "0000-00-00"))
-    unique_code = hash_string(restaurant_name + licensg_de + str(lat) + str(lon))
+    restaurant_name = getattr(raw_data, "bizplc_nm") or "누락"
+    licensg_de = convert_date(getattr(raw_data, "licensg_de") or "0000-00-00")
+    category = getattr(raw_data, "sanittn_bizcond_nm") or "정종/대포집/소주방"
+    code_string = restaurant_name + category + licensg_de + str(lat) + str(lon)
+
+    unique_code = hash_string(code_string)
 
     restaurant_data = {
         "unique_code": unique_code,
-        "category": raw_data.get("category", "정종/대포집/소주방"),
+        "category": category,
         "province": province,
         "name": restaurant_name,
-        "status": raw_data.get("sanittn_bizcond_nm", "영업"),
+        "status": getattr(raw_data, "bsn_state_nm") or "영업",
         "road_addr": road_addr,
         "lot_addr": lot_addr,
         "lat": Decimal(lat),
         "lon": Decimal(lon),
-        "rating": Decimal(raw_data.get("rating", 0.0)),
+        "rating": Decimal(0.0),
     }
 
-    # 이미 존재하는 값일 시 값 업데이트 해서 objects_to_update에 추가
-    if unique_code in existing_restaurant_map:
-        restaurant_instance = existing_restaurant_map[unique_code]
-        update_needed = False
+    if unique_code not in unique_codes_set:
+        unique_codes_set.add(unique_code)
+        if unique_code in existing_restaurant_map:
+            restaurant_instance = existing_restaurant_map[unique_code]
+            update_needed = False
 
-        # rating 제외하고 변경사항 있을 시, 수정
-        for attr, new_value in restaurant_data.items():
-            if attr == "rating":
-                continue
+            for attr, new_value in restaurant_data.items():
+                if attr == "rating":
+                    continue
 
-            current_value = getattr(restaurant_instance, attr)
-            if current_value != new_value:
-                setattr(restaurant_instance, attr, new_value)
-                update_needed = True
+                current_value = await sync_to_async(getattr)(restaurant_instance, attr)
+                if current_value != new_value:
+                    await sync_to_async(setattr)(restaurant_instance, attr, new_value)
+                    update_needed = True
 
-        if update_needed:
-            objects_to_update.append(restaurant_instance)
-
-    # 존재하지 않을 시 새로 instance 만들어서 objects_to_create에 추가
-    else:
-        objects_to_create.append(Restaurant(**restaurant_data))
+            if update_needed:
+                objects_to_update.append(restaurant_instance)
+        else:
+            objects_to_create.append(Restaurant(**restaurant_data))
 
     return objects_to_create, objects_to_update
 
@@ -217,14 +211,6 @@ async def fetch_address_info(session, addr):
     """
 
     KAKAO_API_URL = "https://dapi.kakao.com/v2/local/search/address.json"
-
-    BASE_DIR = Path(__file__).resolve().parent.parent.parent
-    env = environ.Env()
-    env.read_env(f"{BASE_DIR}/.env")
-
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-    django.setup()
 
     KAKAO_API_KEY = os.environ.get("KAKAO_API_KEY")
 
@@ -282,6 +268,8 @@ async def data_preprocessing_pipline():
         # 신규 데이터 create or update 실행
         if objects_to_create or objects_to_update:
             await save_restaurant_data(objects_to_create, objects_to_update)
+
+        await session.close()
 
 
 def convert_date(date_str):
