@@ -11,4 +11,3 @@ class ProvinceListView(APIView):
 
         # 응답 반환
         return Response(ProvinceSerializer, status=status.HTTP_200_OK)
-
