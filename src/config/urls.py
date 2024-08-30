@@ -69,4 +69,5 @@ urlpatterns = [
     path("logout/", UserLogOutAPIView.as_view()),
     path("provinces/", include("province.urls")),
     path("restaurants/", include("restaurant.urls")),
+    path("score/", include("score.urls")),
 ]

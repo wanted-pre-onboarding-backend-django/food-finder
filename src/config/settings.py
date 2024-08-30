@@ -49,6 +49,7 @@ PROJECT_APPS = [
     "user.apps.UserConfig",
     "restaurant",
     "province",
+    "score",
 ]
 
 # Apps from external packages
