@@ -32,7 +32,7 @@ def hash_string(target_string):
     """
     param으로 넘겨 받은 string 해싱 처리(sha512)
     :param target_string: 해시로 바꿀 string
-    :return: SHA-512 해시 문자열
+    :return: SHA-256 해시 문자열
     """
 
     # 해시 객체 생성
@@ -49,7 +49,7 @@ async def preprocess_restaurant_data(
     session,
 ) -> Tuple[List[Restaurant], List[Restaurant]]:
     """
-    맛집 raw data 전처리
+    맛집 raw data 전처리 전체 처리
     :param session: aiohttp.ClientSession
     :return: 새로 restaurant 테이블에 추가할 데이터와 기존 데이터 업데이트할 데이터
     """
@@ -71,7 +71,7 @@ async def preprocess_restaurant_data(
         for raw_data in raw_datas
     ]
 
-    # tqdm_asyncio의 tqdm을 사용하여 진행 상황을 표시합니다.
+    # tqdm_asyncio의 tqdm을 사용하여 진행 상황을 표시
     results = await tqdm_asyncio.gather(*tasks, desc="Data Preprocessing")
 
     # 결과를 합쳐서 objects_to_create, objects_to_update에 추가
@@ -85,28 +85,38 @@ async def preprocess_restaurant_data(
 async def process_raw_data(
     raw_data, existing_restaurant_map, session, unique_codes_set
 ) -> Tuple[List[Restaurant], List[Restaurant]]:
+    """
+    맛집 raw data 전처리 (단일)
+    :param session: aiohttp.ClientSession
+    :return: 새로 restaurant 테이블에 추가할 데이터와 기존 데이터 업데이트할 데이터
+    """
+
     objects_to_update = []
     objects_to_create = []
 
-    # 기본값 설정
+    # 도로명 주소, 지번주소, 위도, 경도 기본값 설정
     default_road_addr = "기본 도로 주소"
     default_lot_addr = "기본 지번 주소"
     default_lat = 0.0
     default_lon = 0.0
 
+    # 네 컬럼 값 None일 시, default 값으로 대체
     road_addr = getattr(raw_data, "refine_roadnm_addr") or default_road_addr
     lot_addr = getattr(raw_data, "refine_lotno_addr") or default_lot_addr
     lat = getattr(raw_data, "refine_wgs84_lat") or default_lat
     lon = getattr(raw_data, "refine_wgs84_logt") or default_lon
 
+    # 4 컬럼 값 중 하나라도 None일 시, 카카오 api 요청
     if (
         road_addr == default_road_addr
         and lot_addr == default_lot_addr
         and lat == default_lat
         and lon == default_lon
     ):
+        # 지번주소 우선으로 요청, 지번주소 None일 시 도로명 주소 대신 요청
         request_addr = lot_addr or road_addr
         try:
+            # 카카오 지도 api 데이터 요청한 뒤, 없는 컬럼 값만 해당 값으로 대체
             data = await fetch_address_info(session, request_addr)
             if data:
                 if road_addr == default_road_addr:
@@ -122,6 +132,8 @@ async def process_raw_data(
         except Exception as e:
             print(f"Error fetching address info: {e}")
 
+    # 시도 값 fk mapping
+    # 없을 시 기본값 넣어줌
     try:
         province = await sync_to_async(Province.objects.get)(city=lot_addr.split()[1])
     except Province.DoesNotExist:
@@ -129,6 +141,8 @@ async def process_raw_data(
         if not province:
             raise ValueError("No provinces data")
 
+    # unique_code(pk) 제작
+    # 음식점명 + 영업 인허가일자 + 분야 + 좌표 값으로 code 만든 뒤 hash 처리
     restaurant_name = getattr(raw_data, "bizplc_nm") or "누락"
     licensg_de = convert_date(getattr(raw_data, "licensg_de") or "0000-00-00")
     category = getattr(raw_data, "sanittn_bizcond_nm") or "정종/대포집/소주방"
@@ -141,7 +155,7 @@ async def process_raw_data(
         "category": category,
         "province": province,
         "name": restaurant_name,
-        "status": getattr(raw_data, "bsn_state_nm") or "영업",
+        "status": getattr(raw_data, "bsn_state_nm") or "폐업",
         "road_addr": road_addr,
         "lot_addr": lot_addr,
         "lat": Decimal(lat),
@@ -149,12 +163,16 @@ async def process_raw_data(
         "rating": Decimal(0.0),
     }
 
+    # 해시값 기존 값과 일치하지 않을 시(중복값 아닐 시) 이하 로직 실행
     if unique_code not in unique_codes_set:
         unique_codes_set.add(unique_code)
+
+        # 같은 해시값이 이미 존재할 경우, update
         if unique_code in existing_restaurant_map:
             restaurant_instance = existing_restaurant_map[unique_code]
             update_needed = False
 
+            # 평점(rating) 제외한 나머지 값들 검증해서 변경해야 할 시에만 저장
             for attr, new_value in restaurant_data.items():
                 if attr == "rating":
                     continue
@@ -166,8 +184,12 @@ async def process_raw_data(
 
             if update_needed:
                 objects_to_update.append(restaurant_instance)
+
+        # 존재하지 않을 시 신규 데이터 저장
+        # 이때 폐업 상태인 맛집 데이터는 아예 저장하지 않음
         else:
-            objects_to_create.append(Restaurant(**restaurant_data))
+            if restaurant_data["status"] != "폐업":
+                objects_to_create.append(Restaurant(**restaurant_data))
 
     return objects_to_create, objects_to_update
 
@@ -240,24 +262,6 @@ async def fetch_address_info(session, addr):
             print(f"Failed to fetch address datas: HTTP {response.status}")
 
     return None
-
-    # try:
-    #     # api 요청
-    #     response = requests.get(
-    #         KAKAO_API_URL,
-    #         headers=headers,
-    #         params=params,
-    #     )
-
-    #     # 오류 발생 시 오류 raise
-    #     response.raise_for_status()
-    #     data = response.json()
-
-    #     return data["documents"][0]
-
-    # except requests.exceptions.RequestException as e:
-    #     print(f"Error fetching data: {e}")
-    #     return None
 
 
 async def data_preprocessing_pipline():
