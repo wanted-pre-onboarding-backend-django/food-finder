@@ -8,4 +8,4 @@ exclude =
     venv,
     .venv,
     .env
-ignore = F401, E501
+ignore = F401, E501, W503
