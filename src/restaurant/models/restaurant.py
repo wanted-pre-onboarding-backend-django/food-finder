@@ -71,10 +71,6 @@ class Restaurant(BaseModel):
     class Meta:
         """Meta definition for Restaurant."""
 
-        unique_together = (
-            "name",
-            "lot_addr",
-        )  # 가게명과 주소의 조합이 유일하게 유지됨
         verbose_name = "Restaurant"
         verbose_name_plural = "Restaurants"
         db_table = "restaurant"
