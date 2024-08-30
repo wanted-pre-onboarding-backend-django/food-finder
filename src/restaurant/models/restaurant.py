@@ -1,5 +1,6 @@
 from django.db import models
 from config.models import BaseModel
+from sigungu.models import Sigungu
 
 
 class Restaurant(BaseModel):
@@ -21,11 +22,12 @@ class Restaurant(BaseModel):
     category = models.CharField(
         max_length=50,
         choices=CategoryChoices.choices,
-        verbose_name="음식점 분류",
+        verbose_name="음식점 분류(위생업태명)",
     )
-    sigun = models.CharField(
-        max_length=255,
-        verbose_name="시군명",
+    sigun = models.ForeignKey(
+        Sigungu,
+        on_delete=models.DO_NOTHING,
+        verbose_name="시군구",
     )
     name = models.CharField(
         max_length=255,
@@ -47,12 +49,12 @@ class Restaurant(BaseModel):
     latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
-        verbose_name="WGS84위도",
+        verbose_name="위도",
     )
     longitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
-        verbose_name="WGS84경도",
+        verbose_name="경도",
     )
     rating = models.FloatField(
         default=0.0,
@@ -60,10 +62,15 @@ class Restaurant(BaseModel):
     )
 
     class Meta:
+        """Meta definition for Restaurant."""
+
         unique_together = (
             "name",
             "lot_addr",
         )  # 가게명과 주소의 조합이 유일하게 유지됨
+        verbose_name = "Restaurant"
+        verbose_name_plural = "Restaurants"
+        db_table = "restaurant"
 
     def __str__(self):
         return self.name
