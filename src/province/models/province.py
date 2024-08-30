@@ -3,6 +3,7 @@ from config.models import BaseModel
 
 
 class Province(BaseModel):
+    """Raw data of Province Model"""
 
     city = models.CharField(
         max_length=50,
@@ -19,5 +20,12 @@ class Province(BaseModel):
         verbose_name="경도",
     )
 
-    def __str__(self):
-        return self.city
+    class Meta:
+        """Meta definition for Province"""
+
+        verbose_name = "Province"
+        verbose_name_plural = "Provinces"
+        db_table = "province"
+
+        def __str__(self) -> str:
+            return self.city
