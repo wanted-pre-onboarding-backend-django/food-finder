@@ -12,13 +12,13 @@ class Restaurant(BaseModel):
 
     class CategoryChoices(models.TextChoices):
         # CATEGORY 음식점 분류르 위한 초이스
-        CHINESE = ("Genrestrtchifood", "중식")
+        CHINESE = ("Genrestrtchifood", "중국식")
         JAPANESE = ("Genrestrtjpnfood", "일식")
-        SOUP = ("Genrestrtsoup", "탕집")
-        PUB = ("Genrestrtstandpub", "정종대포집")
+        SOUP = ("Genrestrtsoup", "탕류(보신용)")
+        PUB = ("Genrestrtstandpub", "정종/대포집/소주방")
         FAST_FOOD = ("Genrestrtchifood", "패스트푸드")
 
-    CATEGORY = models.CharField(
+    SANITTN_BIZCOND_NM = models.CharField(
         max_length=50,
         choices=CategoryChoices.choices,
         verbose_name="음식점 분류",
@@ -35,10 +35,6 @@ class Restaurant(BaseModel):
         max_length=2,
         choices=BusinessStatus.choices,
         verbose_name="영업상태명",
-    )
-    SANITTN_BIZCOND_NM = models.CharField(
-        max_length=255,
-        verbose_name="위생업태명",
     )
     REFINE_ROADNM_ADDR = models.CharField(
         max_length=255,
