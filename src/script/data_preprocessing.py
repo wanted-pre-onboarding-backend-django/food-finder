@@ -132,7 +132,7 @@ async def process_raw_data(
         except Exception as e:
             print(f"Error fetching address info: {e}")
 
-    # 시도 값 fk mapping
+    # 시도(province) 값 fk mapping
     # 없을 시 기본값 넣어줌
     try:
         province = await sync_to_async(Province.objects.get)(city=lot_addr.split()[1])
@@ -142,7 +142,7 @@ async def process_raw_data(
             raise ValueError("No provinces data")
 
     # unique_code(pk) 제작
-    # 음식점명 + 영업 인허가일자 + 분야 + 좌표 값으로 code 만든 뒤 hash 처리
+    # 음식점명 + 분야 + 영업 인허가일자 + 좌표 값으로 code 만든 뒤 hash 처리
     restaurant_name = getattr(raw_data, "bizplc_nm") or "누락"
     licensg_de = convert_date(getattr(raw_data, "licensg_de") or "0000-00-00")
     category = getattr(raw_data, "sanittn_bizcond_nm") or "정종/대포집/소주방"
@@ -265,6 +265,9 @@ async def fetch_address_info(session, addr):
 
 
 async def data_preprocessing_pipline():
+    """
+    raw data 전처리 파이프라인 함수
+    """
     async with aiohttp.ClientSession() as session:
         # 데이터 전처리 실행
         objects_to_create, objects_to_update = await preprocess_restaurant_data(session)
