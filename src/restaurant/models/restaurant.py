@@ -24,7 +24,7 @@ class Restaurant(BaseModel):
         choices=CategoryChoices.choices,
         verbose_name="음식점 분류(위생업태명)",
     )
-    sigun = models.ForeignKey(
+    province = models.ForeignKey(
         Province,
         on_delete=models.DO_NOTHING,
         verbose_name="시군구",
