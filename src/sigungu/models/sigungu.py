@@ -2,7 +2,7 @@ from django.db import models
 from config.models import BaseModel
 
 
-class Sigungu(BaseModel):
+class Province(BaseModel):
 
     city = models.CharField(
         max_length=50,

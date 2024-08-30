@@ -1,10 +1,10 @@
 from django.contrib import admin
-from sigungu.models import Sigungu
+from province.models import Province
 
 
-@admin.register(Sigungu)
-class SigunguAdmin(admin.ModelAdmin):
-    """Admin for Sigungu model"""
+@admin.register(Province)
+class ProvinceAdmin(admin.ModelAdmin):
+    """Admin for Province model"""
 
     list_display = (
         "city",

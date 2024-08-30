@@ -1,1 +1,1 @@
-from .sigungu import Sigungu
+from .province import Province

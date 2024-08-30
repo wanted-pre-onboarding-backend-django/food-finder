@@ -1,1 +1,1 @@
-from .sigungu_admin import SigunguAdmin
+from .province import ProvinceAdmin

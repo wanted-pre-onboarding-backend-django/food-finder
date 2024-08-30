@@ -48,7 +48,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     "user.apps.UserConfig",
     "restaurant",
-    "sigungu",
+    "province",
 ]
 
 # Apps from external packages
