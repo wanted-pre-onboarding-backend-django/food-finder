@@ -13,7 +13,7 @@ class Restaurant(BaseModel):
 
     class CategoryChoices(models.TextChoices):
         # CATEGORY 음식점 분류를 위한 초이스
-        CHINESE = ("Genrestrtchifood", "중국식")
+        CHINESE = ("Genrestrtfastfood", "중국식")
         JAPANESE = ("Genrestrtjpnfood", "일식")
         SOUP = ("Genrestrtsoup", "탕류(보신용)")
         PUB = ("Genrestrtstandpub", "정종/대포집/소주방")
@@ -46,17 +46,19 @@ class Restaurant(BaseModel):
         max_length=255,
         verbose_name="소재지지번주소",
     )
-    latitude = models.DecimalField(
+    lat = models.DecimalField(
         max_digits=9,
         decimal_places=6,
         verbose_name="위도",
     )
-    longitude = models.DecimalField(
+    lon = models.DecimalField(
         max_digits=9,
         decimal_places=6,
         verbose_name="경도",
     )
-    rating = models.FloatField(
+    rating = models.DecimalField(
+        max_digits=3,  # 점까지 포함한 스트링으로 저장
+        decimal_places=1,  # 소수점 이하 한 자리를 의미
         default=0.0,
         verbose_name="평점",
     )

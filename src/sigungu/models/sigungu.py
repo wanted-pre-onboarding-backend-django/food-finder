@@ -8,16 +8,16 @@ class Sigungu(BaseModel):
         max_length=50,
         verbose_name="시 명칭",
     )
-    lat = models.FloatField(
+    lat = models.DecimalField(
         max_digits=9,
         decimal_places=6,
         verbose_name="위도",
     )
-    lon = models.FloatField(
+    lon = models.DecimalField(
         max_digits=9,
         decimal_places=6,
         verbose_name="경도",
     )
 
     def __str__(self):
-        return self.sgg
+        return self.city
