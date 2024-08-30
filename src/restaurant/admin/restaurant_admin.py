@@ -10,14 +10,14 @@ class RestaurantAdmin(admin.ModelAdmin):
         "name",
         "category",
         "status",
-        "sigun",
+        # "sigun",
         "road_addr",
         "rating",
     )
     list_filter = (
         "category",
         "status",
-        "sigun",
+        # "sigun",
     )
     search_fields = ("name", "road_addr", "lot_addr")
 
