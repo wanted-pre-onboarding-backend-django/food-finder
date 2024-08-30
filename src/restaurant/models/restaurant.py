@@ -19,7 +19,7 @@ class Restaurant(BaseModel):
         PUB = ("정종/대포집/소주방", "정종/대포집/소주방")
         FAST_FOOD = ("패스트푸드", "패스트푸드")
 
-    hash_value = models.CharField(
+    unique_code = models.CharField(
         max_length=64,  # SHA-256 해시의 16진수 문자열 길이
         unique=True,  # 해시값이 유일해야 함
         verbose_name="SHA-256 Hash Value",
