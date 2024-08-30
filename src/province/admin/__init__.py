@@ -1,1 +1,1 @@
-from .province import ProvinceAdmin
+from .province_admin import ProvinceAdmin
