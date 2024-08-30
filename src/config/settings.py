@@ -50,6 +50,7 @@ PROJECT_APPS = [
     "restaurant",
     "province",
     "review",
+    "score",
 ]
 
 # Apps from external packages

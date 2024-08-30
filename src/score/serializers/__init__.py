@@ -1,0 +1,1 @@
+from .score_serializers import ReviewSerializer
