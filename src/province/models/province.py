@@ -20,7 +20,6 @@ class Province(BaseModel):
     )
 
     class Meta:
-
         verbose_name = "Province"
         verbose_name_plural = "Provinces"
         db_table = "province"

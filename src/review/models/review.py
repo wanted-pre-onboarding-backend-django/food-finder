@@ -26,6 +26,11 @@ class Review(models.Model):
         auto_now_add=True,
     )
 
+    class Meta:
+        verbose_name = "Review"
+        verbose_name_plural = "Reviews"
+        db_table = "Review"
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # 맛집 평점 업데이트
