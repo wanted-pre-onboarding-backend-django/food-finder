@@ -1,1 +1,0 @@
-from .score_views import ReviewViewSet
