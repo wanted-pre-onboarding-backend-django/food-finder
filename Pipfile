@@ -12,6 +12,9 @@ requests = "2.32.3"
 pyjwt = "2.9.0"
 aiohttp = "*"
 tqdm = "*"
+celery = "==5.4.0"
+django-celery-beat = "==2.7.0"
+django-celery-results = "==2.5.1"
 
 [dev-packages]
 flake8 = "==7.1.0"
