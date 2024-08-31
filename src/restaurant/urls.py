@@ -17,11 +17,6 @@ urlpatterns = [
         name="restaurant-list",
     ),
     path(
-        "<str:unique_code>/reviews/",
-        ReviewView.as_view(),
-        name="restaurant-review",
-    ),
-    path(
         "<str:unique_code>",
         RestaurantDetailView.as_view(),
         name="restaurant-detail",
