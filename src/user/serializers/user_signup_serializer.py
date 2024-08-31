@@ -7,11 +7,7 @@ from django.contrib.auth import password_validation
 class UserSignupSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            "account",
-            "email",
-            "password",
-        ]
+        fields = ["account", "email", "password",]
         extra_kwargs = {
             "password": {"write_only": True},
         }

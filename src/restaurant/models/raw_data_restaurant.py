@@ -3,7 +3,7 @@ from config.models import BaseModel
 
 
 class RdRestaurant(BaseModel):
-    """Raw data of Restaurant Model"""
+    """ Raw data of Restaurant Model """
 
     sigun_nm = models.CharField(
         max_length=255,
@@ -115,7 +115,7 @@ class RdRestaurant(BaseModel):
     )
 
     class Meta:
-        """Meta definition for Raw Data of Restaurant"""
+        """ Meta definition for Raw Data of Restaurant """
 
         verbose_name = "RdRestaurant"
         verbose_name_plural = "RdRestaurant"

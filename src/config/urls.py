@@ -67,7 +67,6 @@ urlpatterns = [
     path("signup/", UserSignupAPIView.as_view()),
     path("login/", UserLogInAPIView.as_view()),
     path("logout/", UserLogOutAPIView.as_view()),
-    path("provinces/", include("province.urls")),
     path("restaurants/", include("restaurant.urls")),
-    path("review/", include("review.urls")),
+    path("provinces/", include("province.urls")),
 ]
