@@ -17,17 +17,21 @@ class Command(BaseCommand):
             month_of_year="*",
         )
 
-        PeriodicTask.objects.get_or_create(
-            crontab=schedule,
+        data_collection_task, created = PeriodicTask.objects.update_or_create(
             name="Data Collection Task",
-            task="myapp.tasks.data_collection_task",  # tasks.py의 작업 이름
+            defaults={
+                "crontab": schedule,
+                "task": "restaurant.tasks.data_collection_task",  # tasks.py에 세팅해둔 작업명
+            },
         )
 
         # 데이터 전처리 작업 스케줄 설정
-        PeriodicTask.objects.get_or_create(
-            crontab=schedule,
+        data_pipeline_task, created = PeriodicTask.objects.update_or_create(
             name="Data Preprocessing Task",
-            task="myapp.tasks.data_preprocessing_task",  # tasks.py의 작업 이름
+            defaults={
+                "crontab": schedule,
+                "task": "restaurant.tasks.data_preprocessing_task",  # tasks.py에 세팅해둔 작업명
+            },
         )
 
         self.stdout.write(self.style.SUCCESS("Successfully set up schedules"))
