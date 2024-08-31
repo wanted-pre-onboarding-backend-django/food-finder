@@ -63,11 +63,10 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
-    path("", include("review.urls")),
     path("users/", include("user.urls")),
     path("signup/", UserSignupAPIView.as_view()),
     path("login/", UserLogInAPIView.as_view()),
     path("logout/", UserLogOutAPIView.as_view()),
-    path("restaurants/", include("restaurant.urls")),
+    path("restaurants/", include("restaurant.urls", "restaurant")),
     path("provinces/", include("province.urls")),
 ]

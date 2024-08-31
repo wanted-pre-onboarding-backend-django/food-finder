@@ -5,12 +5,6 @@ from review.views import ReviewView
 app_name = "restaurant"
 router = DefaultRouter()
 
-urlpatterns = [
-    path(
-        "/restaurants/<int:restaurant_id>/reviews/",
-        ReviewView.as_view(),
-        name="create_review",
-    ),
-]
+urlpatterns = []
 
 urlpatterns += router.urls
