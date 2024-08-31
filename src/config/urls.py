@@ -68,5 +68,5 @@ urlpatterns = [
     path("login/", UserLogInAPIView.as_view()),
     path("logout/", UserLogOutAPIView.as_view()),
     path("restaurants/", include("restaurant.urls")),
-    path("province/", include("province.urls")),
+    path("provinces/", include("province.urls")),
 ]

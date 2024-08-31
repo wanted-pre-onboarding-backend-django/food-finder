@@ -20,4 +20,5 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
             "lon",
             "rating",
             "province",
+            "reviews",
         ]

@@ -22,7 +22,7 @@ class RestaurantAdmin(admin.ModelAdmin):
     search_fields = ("name", "road_addr", "lot_addr")
 
     fieldsets = (
-        (None, {"fields": ("name", "category", "status", "province")}),
+        (None, {"fields": ("unique_code", "name", "category", "status", "province")}),
         ("Location Information", {"fields": ("road_addr", "lot_addr", "lat", "lon")}),
         ("Additional Information", {"fields": ("rating",)}),
     )
