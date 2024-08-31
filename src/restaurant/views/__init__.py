@@ -1,0 +1,2 @@
+from .restaurant_detail_view import RestaurantDetailView
+from .restaurant_list_view import RestaurantListView
