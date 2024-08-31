@@ -277,7 +277,7 @@ async def fetch_address_info(session, addr):
     return None
 
 
-async def data_preprocessing_pipline():
+async def data_preprocessing_pipeline():
     """
     raw data 전처리 파이프라인 함수
     """
@@ -294,7 +294,7 @@ async def data_preprocessing_pipline():
 
 if __name__ == "__main__":
     start_time = time.time()
-    asyncio.run(data_preprocessing_pipline())
+    asyncio.run(data_preprocessing_pipeline())
     end_time = time.time()
 
     elapsed_time = end_time - start_time
