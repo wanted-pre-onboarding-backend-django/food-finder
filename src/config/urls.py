@@ -70,5 +70,4 @@ urlpatterns = [
     path("provinces/", include("province.urls")),
     path("restaurants/", include("restaurant.urls")),
     path("review/", include("review.urls")),
-    path("score/", include("score.urls")),
 ]
