@@ -28,7 +28,7 @@ from restaurant.models import RdRestaurant, Restaurant
 from province.models import Province
 
 
-def hash_string(target_string):
+def hash_string(target_str):
     """
     param으로 넘겨 받은 string 해싱 처리(sha512)
     :param target_string: 해시로 바꿀 string
@@ -39,10 +39,23 @@ def hash_string(target_string):
     sha256_hash = hashlib.sha256()
 
     # 입력 문자열 바이트로 인코딩해 해시 객체에 업데이트
-    sha256_hash.update(target_string.encode("utf-8"))
+    sha256_hash.update(target_str.encode("utf-8"))
 
     # 해시값 16진수 문자열로 변환
     return sha256_hash.hexdigest()
+
+
+def convert_date(date_str):
+    """
+    Convert date string to 'YYYY-MM-DD' format
+    :param date_str: 날짜 형태 format할 string
+    :return: 0000-00-00 형태의 문자열
+    """
+
+    if "-" not in date_str and len(date_str) >= 8:
+        return date_str[:4] + "-" + date_str[4:6] + "-" + date_str[6:]
+    else:
+        return date_str
 
 
 async def preprocess_restaurant_data(
@@ -277,15 +290,6 @@ async def data_preprocessing_pipline():
             await save_restaurant_data(objects_to_create, objects_to_update)
 
         await session.close()
-
-
-def convert_date(date_str):
-    """Convert date string to 'YYYY-MM-DD' format"""
-
-    if "-" not in date_str and len(date_str) >= 8:
-        return date_str[:4] + "-" + date_str[4:6] + "-" + date_str[6:]
-    else:
-        return date_str
 
 
 if __name__ == "__main__":
