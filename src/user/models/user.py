@@ -92,4 +92,3 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     def __str__(self) -> str:
         return f"[{self.id}] {self.account}"
-    

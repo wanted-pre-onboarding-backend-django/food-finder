@@ -8,7 +8,7 @@ def update_restaurant_rating(restaurant: Restaurant):
     from review.models import Review
 
     if restaurant is None:
-        return 
+        return
 
     reviews = Review.objects.filter(restaurant=restaurant)
     if reviews.exists():

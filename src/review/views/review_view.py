@@ -21,7 +21,7 @@ class ReviewView(APIView):
 
         # 요청에서 점수와 내용 가져오기
         data = {
-            "user": request.user.id, 
+            "user": request.user.id,
             "restaurant": restaurant.unique_code,  # 문자열 PK unique_code 사용
             "score": request.data.get("score"),
             "content": request.data.get("content"),
@@ -29,6 +29,6 @@ class ReviewView(APIView):
 
         serializer = ReviewSerializer(data=data)
         if serializer.is_valid():
-            serializer.save() 
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
