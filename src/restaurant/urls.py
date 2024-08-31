@@ -5,6 +5,7 @@ from restaurant.views import (
     RestaurantListView,
     RestaurantDetailView,
 )
+from review.views import ReviewView
 
 app_name = "restaurant"
 router = DefaultRouter()
@@ -16,7 +17,12 @@ urlpatterns = [
         name="restaurant-list",
     ),
     path(
-        "<int:pk>",
+        "<str:unique_code>/reviews/",
+        ReviewView.as_view(),
+        name="restaurant-review",
+    ),
+    path(
+        "<str:unique_code>",
         RestaurantDetailView.as_view(),
         name="restaurant-detail",
     ),
