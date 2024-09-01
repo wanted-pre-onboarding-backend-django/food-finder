@@ -15,7 +15,6 @@ services:
         - DEV=true
     command: >
       bash -c "pipenv run python manage.py migrate && pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000"
-    #command: ./wait-for-it.sh postgres:5432 -- ./wait-for-it.sh redis:6379 -- pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./static:/app/src/staticfiles/
     ports:
@@ -41,12 +40,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - webnet
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
 
   # Redis
   redis:
     image: redis:7
     networks:
       - webnet
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
 
   # Nginx 웹 서버
   nginx:
