@@ -9,6 +9,7 @@
 ### 프로젝트 폴더 바로 아래에 .env 파일을 만들고 아래 내용을 넣어주세요.
 ```
 SECRET_KEY=your-secret-key
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/   #우리조 디스코드에 URL로 검색하면 나옴
 ```
 
 ### 프로젝트 환경설정
