@@ -48,7 +48,7 @@ def recommend_lunch():
                 key=sort_by_rating,  # 평점을 기준으로 정렬
                 reverse=True,  # 내림차순 정렬
             )
-            category_restaurants[category] = sorted_restaurants[:1]  # 상위 5개 선택
+            category_restaurants[category] = sorted_restaurants[:5]  # 상위 5개 선택
 
         # Discord Webhook을 통해 메시지 보내기
         send_discord_webhook(user, category_restaurants)
