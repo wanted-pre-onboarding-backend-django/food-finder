@@ -23,3 +23,11 @@ def data_preprocessing_task():
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(f"Data preprocessing executed in {elapsed_time:.2f} seconds")
+
+
+@shared_task
+def run_full_pipeline():
+    # 첫 번째 파이프라인 실행
+    asyncio.run(data_collection_pipeline())
+    # 두 번째 파이프라인 실행
+    asyncio.run(data_preprocessing_pipeline())
