@@ -13,6 +13,8 @@ pyjwt = "==2.9.0"
 aiohttp = "==3.10.5"
 tqdm = "==4.66.5"
 gunicorn = "23.0.0"
+whitenoise = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 flake8 = "==7.1.0"
