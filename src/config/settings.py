@@ -25,6 +25,7 @@ env = environ.Env()
 env.read_env(f"{BASE_DIR}/.env")
 
 SECRET_KEY = env("SECRET_KEY")
+DISCORD_WEBHOOK_URL = env("DISCORD_WEBHOOK_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,6 +48,7 @@ DJANGO_APPS = [
 # Apps defined within the project
 PROJECT_APPS = [
     "user.apps.UserConfig",
+    "config.apps.ConfigConfig",
     "restaurant",
     "province",
     "review",
