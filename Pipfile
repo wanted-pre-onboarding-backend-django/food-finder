@@ -13,6 +13,7 @@ pyjwt = "2.9.0"
 aiohttp = "*"
 tqdm = "*"
 django-redis = "5.4.0"
+redis = "5.0.8"
 
 [dev-packages]
 flake8 = "==7.1.0"

@@ -15,7 +15,7 @@ class ProvinceListView(APIView):
         # 캐시에서 데이터 가져오기
         cached_data = cache.get(cache_key)
 
-        if cached_data is not None:
+        if cached_data is not None and len(cached_data) > 0:
             # 캐시된 데이터가 있는 경우
             return Response(cached_data, status=status.HTTP_200_OK)
 
