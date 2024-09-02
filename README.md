@@ -49,37 +49,10 @@ Scheduler: APScheduler
 |                | - Discord                                                    |
 
 ### ERD
-+---------------------------+         +----------------------------------+         +-------------------------------------------+         +---------------------------+         +---------------------------+
-|           User            |         |              Review              |         |                 Restaurant                |         |          Province          |         |        RdRestaurant       |
-+---------------------------+         +----------------------------------+         +-------------------------------------------+         +---------------------------+         +---------------------------+
-| id (PK)                   | <---- 1 | id (PK)                         | N ----> | id (PK)                                   | N ----> | id (PK)                   |         | id (PK)                   |
-| account (Unique)          |         | user_id (FK)                    |         | unique_code (Unique)                      |         | city                      |         | sigun_nm                  |
-| email (Unique)            |         | restaurant_id (FK)              |         | category                                  |         | lat                       |         | sigun_cd                  |
-| password                  |         | score (0-5)                     |         | province_id (FK)                          |         | lon                       |         | bizplc_nm                 |
-| is_active                 |         | content                         |         | name                                      |         +---------------------------+         | licensg_de                |
-| is_staff                  |         | created_at                      |         | status (OPEN/CLOSE)                       |                                           | bsn_state_nm               |
-| is_superuser              |         +----------------------------------+         | road_addr                                 |                                           | clsbiz_de                  |
-| is_lunch_rec_allowed      |                                              | lot_addr                                  |                                           | locplc_ar                  |
-| latitude                  |                                              | lat                                        |                                           | grad_faclt_div_nm          |
-| longitude                 |                                              | lon                                        |                                           | male_enflpsn_cnt           |
-+---------------------------+                                              | rating (0.0 - 5.0)                         |                                           | yy                         |
-                                                                          +-------------------------------------------+                                           | multi_use_bizestbl_yn      |
-                                                                                                                                                                   | grad_div_nm                |
-                                                                                                                                                                   | tot_faclt_scale            |
-                                                                                                                                                                   | female_enflpsn_cnt         |
-                                                                                                                                                                   | bsnsite_circumfr_div_nm    |
-                                                                                                                                                                   | sanittn_indutype_nm        |
-                                                                                                                                                                   | sanittn_bizcond_nm         |
-                                                                                                                                                                   | tot_emply_cnt              |
-                                                                                                                                                                   | refine_lotno_addr          |
-                                                                                                                                                                   | refine_roadnm_addr         |
-                                                                                                                                                                   | refine_zip_cd              |
-                                                                                                                                                                   | refine_wgs84_logt          |
-                                                                                                                                                                   | refine_wgs84_lat           |
-                                                                                                                                                                   +—————————————+
+추가예정
 
 ### Service Architecture
-![image](https://github-production-user-asset-6210df.s3.amazonaws.com/64644262/363665582-f9eb04cd-ed59-4608-840d-f8bddc3a23fe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240902T110909Z&X-Amz-Expires=300&X-Amz-Signature=8cfe99ecb757abebcd9e0c97c0215a703d26fc726552a51fffc0cc89e5ea3e5d&X-Amz-SignedHeaders=host&actor_id=58853040&key_id=0&repo_id=844917575)
+![Food Finder Structure](https://github-production-user-asset-6210df.s3.amazonaws.com/64644262/363665582-f9eb04cd-ed59-4608-840d-f8bddc3a23fe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240902T113549Z&X-Amz-Expires=300&X-Amz-Signature=4fcefdc59f0000e8f71a9d12072b3164c077b0212e9ee4e1270603a354ced840&X-Amz-SignedHeaders=host&actor_id=64644262&key_id=0&repo_id=844917575)
 
 
 ### 디렉토리 구조
@@ -207,11 +180,24 @@ Scheduler: APScheduler
 * 루트 디렉토리에 `.env` 밑처럼 세팅
 ```
 SECRET_KEY= // 자체 입력
-POSTGRES_DB=feedflowdb
-POSTGRESQL_HOST=postgres => 해당 부분은 무조건 고정
-POSTGRES_USER= // 자체 입력
-POSTGRES_PASSWORD= // 자체 입력
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/   #디스코드 팀채널에서 복사하세요 
 TZ=Asia/Seoul
+
+# DOCKERIZE SETTINGS
+# PORT=1234
+# USE_DOCKER=True
+
+## POSTGRES SETTINGS
+POSTGRES_DB=postgres
+POSTGRES_NAME=postgres
+POSTGRES_PORT=5123
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+# CELERY
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=redis://redis:6379/1
+
 ```
 
 * Ubuntu (Debian Linux) 기준
@@ -254,99 +240,5 @@ docker rmi $(docker images -q)
 | 맛집 평가 생성         | POST        | /restaurants/{unique_code}/reviews/           | 특정 맛집에 대한 사용자의 평가를 생성합니다.                   |
 | 사용자 프로필 조회     | GET         | /users/me/                                    | 현재 로그인된 사용자의 위치정보를 조회합니다.                     |
 | 사용자 정보 업데이트   | PUT         | /users/me/                                    | 현재 로그인된 사용자의 위치정보를 업데이트합니다.                 |
-
-
-### 프로젝트 폴더 바로 아래에 .env 파일을 만들고 아래 내용을 넣어주세요.
-```
-SECRET_KEY=your-secret-key
-```
-
-### 프로젝트 환경설정
-아래의 명령어를 순서대로 실행해주세요.
-```shell
-# 1. 가상환경 만들기 (초기 설정 시 1회 실행)
-> pipenv install
-> pipenv install --dev
-
-# 2. 가상환경 실행
-> pipenv shell
-
-# 3. pre-commit 실행 (초기 설정 시 1회 실행)
-> pipenv run pre-commit install
-
-# 4. django 실행하기
-> src 폴더내에서 진행합니다
-> python manage.py migrate
-> python manage.py runserver
-```
-
-
-### Docker를 이용한 개발 환경 구성
-
-1. 아래 환경변수를 .env파일에 추가로 넣어주세요.
-
-```
-# DOCKERIZE SETTINGS
-# PORT=1234
-# USE_DOCKER=True
-
-## POSTGRES SETTINGS
-POSTGRES_DB=postgres
-POSTGRES_NAME=postgres
-POSTGRES_PORT=5123
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-
-# CELERY
-CELERY_BROKER_URL=redis://redis:6379/0
-CELERY_RESULT_BACKEND=redis://redis:6379/1
-
-```
-
-2. `docker-compose up -d --build`
-
-
-### 개발 명령어 모음
-
-```shell
-# formatter 실행
-> black .
-
-# linter 실행
-> flake8
-
-# 가상환경 종료
-> deactivate
-
-# 가상환경 삭제
-> pipenv --rm
-
-# 추가 패키지 설치 (가상환경 활성화 후 실행)
-> pipenv install 패키지명
-
-# 패키지 라이브러리 버전 확인
-> pip show 패키지
-
-# 관리자 계정 생성
-> python manage.py createsuperuser
-```
-
-### Conventional Commits
-```markdown
-- feat: 새로운 기능을 추가할 때 사용.
-- fix: 버그를 수정할 때 사용.
-- docs: 문서에 대한 변경 사항을 기록할 때 사용 (코드 변경 없음).
-- style: 코드의 의미에 영향을 주지 않는 변경 사항 (포맷팅, 세미콜론 누락 등).
-- refactor: 코드 리팩토링 (기능 추가나 버그 수정 없음).
-- test: 테스트 추가나 기존 테스트 수정.
-- chore: 빌드 프로세스나 패키지 매니저 설정 등, 그 외의 변경 사항.
-```
-
-
-## 문서화 확인하는 방법
-- [127.0.0.1:8000/swagger](127.0.0.1:8000/swagger) 또는 [127.0.0.1:8000/redoc](127.0.0.1:8000/redoc) 접속하기
-
-
-
 
 
