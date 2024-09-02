@@ -3,6 +3,7 @@ from pathlib import Path
 import psycopg2
 from psycopg2 import sql
 import csv
+import codecs
 
 
 def load_initial_province_data():
@@ -34,28 +35,29 @@ def load_initial_province_data():
         )
 
         # CSV 파일을 읽어 데이터베이스에 삽입
-        with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+        # CSV 파일이 UTF-8 BOM으로 저장되어 있기에, 제거해서 파일 OPEN
+        with codecs.open(csv_file_path, "rU", "utf-8-sig") as csvfile:
             reader = csv.DictReader(csvfile)
+
             for row in reader:
-                # do_si = row['do-si']
+                do_si = row["do-si"]
                 city = row["sgg"]
                 lon = float(row["lon"])
                 lat = float(row["lat"])
 
                 # 경기 지역 맛집만 정보 제공하므로 경기도 데이터만 추가
-                # if do_si == "경기":
-                insert_query = """
-                INSERT INTO province (city, lon, lat, created_at, updated_at)
-                VALUES (%s, %s, %s, NOW(), NOW())
-                """
-                try:
-                    cur.execute(insert_query, (city, lat, lon))
-                except Exception as e:
-                    conn.rollback()
-                    print(f"An error occurred while inserting {city}: {e}")
-                else:
-                    conn.commit()
-                    print(f"Data for {city} inserted successfully.")
+                if do_si == "경기":
+                    insert_query = """
+                    INSERT INTO province (city, lon, lat, created_at, updated_at)
+                    VALUES (%s, %s, %s, NOW(), NOW())
+                    """
+                    try:
+                        cur.execute(insert_query, (city, lat, lon))
+                    except Exception as e:
+                        conn.rollback()
+                        print(f"An error occurred while inserting {city}: {e}")
+                    else:
+                        conn.commit()
 
     except Exception as e:
         print(f"An error occurred: {e}")
