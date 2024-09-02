@@ -16,7 +16,7 @@ def load_initial_province_data():
     conn = None
     cur = None
 
-    default_do_si = env("DEFAULT_DO_SI")
+    default_do_si = env("DEFAULT_DO_SI", default="경기")
 
     try:
         # PostgreSQL 데이터베이스에 연결
