@@ -27,7 +27,7 @@ class RestaurantListView(APIView):
         # 거리 계산하여 범위 내 식당 필터링
         filtered_restaurants = []
         for restaurant in restaurants:
-            # 식당의 위도와 경도를 float으로 변환
+            # lat, lon을 float으로
             restaurant_location = (float(restaurant.lat), float(restaurant.lon))
             distance = calculate_distance(
                 user_location[0],
@@ -36,7 +36,7 @@ class RestaurantListView(APIView):
                 restaurant_location[1],
             )
             if distance <= range_km:
-                restaurant.distance = distance  # 거리 속성 추가
+                restaurant.distance = distance  # 거리내에
                 filtered_restaurants.append(restaurant)
 
         # 정렬
