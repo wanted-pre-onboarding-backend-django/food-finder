@@ -176,11 +176,11 @@ REST_FRAMEWORK = {
 }
 
 
-# 로컬 Redis 연결
+# 컨테이너 Redis 캐시 설정
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://{env('REDIS_HOST', default='localhost')}:{env('REDIS_PORT', default='6379')}/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
