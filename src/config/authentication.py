@@ -25,4 +25,3 @@ class JWTAuthentication(BaseAuthentication):
             return (user, None)
         except User.DoesNotExist:
             raise AuthenticationFailed("존재하지않는 유저입니다")
-        

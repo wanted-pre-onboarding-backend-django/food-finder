@@ -32,7 +32,7 @@ DATA_TYPES = [
     "Genrestrtjpnfood",
     "Genrestrtchifood",
     "Genrestrtsoup",
-    "Genrestrtstandpub"
+    "Genrestrtstandpub",
 ]
 
 
@@ -42,7 +42,7 @@ async def fetch_total_count(session, data_type):
         response = requests.get(url)
         response.raise_for_status()  # HTTP 오류가 발생했는지 확인
         data = response.json()
-        return data[data_type][0]['head'][0]['list_total_count']
+        return data[data_type][0]["head"][0]["list_total_count"]
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
         return None
@@ -63,8 +63,8 @@ async def fetch_data(session, data_type, page):
                 data = json.loads(text)
 
                 if data_type in data:
-                    if len(data[data_type]) > 1 and 'row' in data[data_type][1]:
-                        return data[data_type][1]['row']
+                    if len(data[data_type]) > 1 and "row" in data[data_type][1]:
+                        return data[data_type][1]["row"]
                     else:
                         print("Unexpected data structure or 'row' key missing.")
                 else:
@@ -107,7 +107,7 @@ async def save_to_db(data_list):
             refine_roadnm_addr=item.get("REFINE_ROADNM_ADDR"),
             refine_zip_cd=item.get("REFINE_ZIP_CD"),
             refine_wgs84_logt=item.get("REFINE_WGS84_LOGT"),
-            refine_wgs84_lat=item.get("REFINE_WGS84_LAT")
+            refine_wgs84_lat=item.get("REFINE_WGS84_LAT"),
         )
         for item in data_list
     ]
@@ -124,7 +124,9 @@ async def data_collection_pipeline():
             for page in range(1, total_pages + 1):
                 tasks.append(fetch_data(session, data_type, page))
 
-        for task in tqdm_asyncio(asyncio.as_completed(tasks), total=len(tasks), desc="Collecting data"):
+        for task in tqdm_asyncio(
+            asyncio.as_completed(tasks), total=len(tasks), desc="Collecting data"
+        ):
             data_list = await task
             if data_list:
                 await save_to_db(data_list)

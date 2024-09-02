@@ -31,17 +31,17 @@ class RdRestaurantAdmin(admin.ModelAdmin):
         "refine_roadnm_addr",
         "refine_zip_cd",
         "refine_wgs84_logt",
-        "refine_wgs84_lat"
+        "refine_wgs84_lat",
     )
 
-    actions = ['export_as_csv']
+    actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
         meta = self.model._meta
         field_names = [field.name for field in meta.fields]
 
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename={meta}.csv'
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = f"attachment; filename={meta}.csv"
         writer = csv.writer(response)
 
         writer.writerow(field_names)
