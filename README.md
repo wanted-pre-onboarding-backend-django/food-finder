@@ -145,7 +145,7 @@ Scheduler: APScheduler
 +---------------------------+
 
 ### Service Architecture
-![Food Finder Structure](https://github-production-user-asset-6210df.s3.amazonaws.com/64644262/363665582-f9eb04cd-ed59-4608-840d-f8bddc3a23fe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240902T113549Z&X-Amz-Expires=300&X-Amz-Signature=4fcefdc59f0000e8f71a9d12072b3164c077b0212e9ee4e1270603a354ced840&X-Amz-SignedHeaders=host&actor_id=64644262&key_id=0&repo_id=844917575)
+![Food Finder Structure](https://private-user-images.githubusercontent.com/64644262/363689166-26fcb683-a2e0-46e6-b70a-299910fa48c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjUyODA3NDYsIm5iZiI6MTcyNTI4MDQ0NiwicGF0aCI6Ii82NDY0NDI2Mi8zNjM2ODkxNjYtMjZmY2I2ODMtYTJlMC00NmU2LWI3MGEtMjk5OTEwZmE0OGM5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA5MDIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwOTAyVDEyMzQwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMzODViYjZkMmNiODQ5Njc3MDdkZDMyZDNmOWZhYWEzNzkyZWVkNjY1ZGZiMjdmODc2YzU5ZWZjOGExM2IyYjAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.hDEEHm1Ezp-V0NM9afn6yV3ZvZfttTmvnoElyWwrKIU)
 
 
 ### 디렉토리 구조
