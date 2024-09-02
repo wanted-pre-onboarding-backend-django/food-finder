@@ -16,6 +16,8 @@ def load_initial_province_data():
     conn = None
     cur = None
 
+    default_do_si = env("DEFAULT_DO_SI")
+
     try:
         # PostgreSQL 데이터베이스에 연결
         conn = psycopg2.connect(
@@ -46,7 +48,7 @@ def load_initial_province_data():
                 lat = float(row["lat"])
 
                 # 경기 지역 맛집만 정보 제공하므로 경기도 데이터만 추가
-                if do_si == "경기":
+                if do_si == default_do_si:
                     insert_query = """
                     INSERT INTO province (city, lon, lat, created_at, updated_at)
                     VALUES (%s, %s, %s, NOW(), NOW())
