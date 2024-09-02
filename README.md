@@ -30,13 +30,56 @@ Scheduler: APScheduler
 
 ## 프로젝트 구조 및 설계
 #### 개발 환경 및 기술 스택
-![image](https://github.com/user-attachments/assets/46501415-2656-4924-8588-7e872be2dd64)
+| 카테고리   | 항목                                                      |
+|----------------|--------------------------------------------------------------|
+| Back-end   | - Python 3.10.11                                             |
+|                | - Django 5.0.7                                               |
+|                | - Django Rest Framework 3.15.2                               |
+|                | - flake8 & black & pre-commit                                |
+| DB         | - PostgreSQL 16.0                                            |
+|                | - Redis                                                      |
+| Server     | - Nginx                                                      |
+|                | - Uvicorn                                                    |
+|                | - Gunicorn                                                   |
+| Task Queue & Scheduler | - Celery                                          |
+|                | - APScheduler                                                |
+| ETC Tools  | - Docker(Compose)                                            |
+|                | - Git & Github                                               |
+|                | - Notion                                                     |
+|                | - Discord                                                    |
 
 ### ERD
-![image](https://github.com/user-attachments/assets/ad487190-e000-4433-ba9d-84e8bfaf6bf1)
++---------------------------+         +----------------------------------+         +-------------------------------------------+         +---------------------------+         +---------------------------+
+|           User            |         |              Review              |         |                 Restaurant                |         |          Province          |         |        RdRestaurant       |
++---------------------------+         +----------------------------------+         +-------------------------------------------+         +---------------------------+         +---------------------------+
+| id (PK)                   | <---- 1 | id (PK)                         | N ----> | id (PK)                                   | N ----> | id (PK)                   |         | id (PK)                   |
+| account (Unique)          |         | user_id (FK)                    |         | unique_code (Unique)                      |         | city                      |         | sigun_nm                  |
+| email (Unique)            |         | restaurant_id (FK)              |         | category                                  |         | lat                       |         | sigun_cd                  |
+| password                  |         | score (0-5)                     |         | province_id (FK)                          |         | lon                       |         | bizplc_nm                 |
+| is_active                 |         | content                         |         | name                                      |         +---------------------------+         | licensg_de                |
+| is_staff                  |         | created_at                      |         | status (OPEN/CLOSE)                       |                                           | bsn_state_nm               |
+| is_superuser              |         +----------------------------------+         | road_addr                                 |                                           | clsbiz_de                  |
+| is_lunch_rec_allowed      |                                              | lot_addr                                  |                                           | locplc_ar                  |
+| latitude                  |                                              | lat                                        |                                           | grad_faclt_div_nm          |
+| longitude                 |                                              | lon                                        |                                           | male_enflpsn_cnt           |
++---------------------------+                                              | rating (0.0 - 5.0)                         |                                           | yy                         |
+                                                                          +-------------------------------------------+                                           | multi_use_bizestbl_yn      |
+                                                                                                                                                                   | grad_div_nm                |
+                                                                                                                                                                   | tot_faclt_scale            |
+                                                                                                                                                                   | female_enflpsn_cnt         |
+                                                                                                                                                                   | bsnsite_circumfr_div_nm    |
+                                                                                                                                                                   | sanittn_indutype_nm        |
+                                                                                                                                                                   | sanittn_bizcond_nm         |
+                                                                                                                                                                   | tot_emply_cnt              |
+                                                                                                                                                                   | refine_lotno_addr          |
+                                                                                                                                                                   | refine_roadnm_addr         |
+                                                                                                                                                                   | refine_zip_cd              |
+                                                                                                                                                                   | refine_wgs84_logt          |
+                                                                                                                                                                   | refine_wgs84_lat           |
+                                                                                                                                                                   +—————————————+
 
 ### Service Architecture
-![image](https://github.com/user-attachments/assets/9aef30b3-91df-48a0-b7ec-461977e25a1b)
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/64644262/363665582-f9eb04cd-ed59-4608-840d-f8bddc3a23fe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240902T110909Z&X-Amz-Expires=300&X-Amz-Signature=8cfe99ecb757abebcd9e0c97c0215a703d26fc726552a51fffc0cc89e5ea3e5d&X-Amz-SignedHeaders=host&actor_id=58853040&key_id=0&repo_id=844917575)
 
 
 ### 디렉토리 구조
@@ -211,8 +254,6 @@ docker rmi $(docker images -q)
 | 맛집 평가 생성         | POST        | /restaurants/{unique_code}/reviews/           | 특정 맛집에 대한 사용자의 평가를 생성합니다.                   |
 | 사용자 프로필 조회     | GET         | /users/me/                                    | 현재 로그인된 사용자의 위치정보를 조회합니다.                     |
 | 사용자 정보 업데이트   | PUT         | /users/me/                                    | 현재 로그인된 사용자의 위치정보를 업데이트합니다.                 |
-
-- [API 명세서 노션 링크](https://www.notion.so/034179/FeedFlow-2af2b82c6acc4ae3af8a0c593225ccc4?pvs=4#f5f3c11a023a47bd9a99f4e30335e029)
 
 
 ### 프로젝트 폴더 바로 아래에 .env 파일을 만들고 아래 내용을 넣어주세요.
