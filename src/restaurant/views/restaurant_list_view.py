@@ -49,7 +49,7 @@ class RestaurantListView(APIView):
         # 거리 계산하여 범위 내필터링
         filtered_restaurants = []
         for restaurant in restaurants:
-            #lat, lon을 float으로
+            # lat, lon을 float으로
             restaurant_location = (float(restaurant.lat), float(restaurant.lon))
             distance = calculate_distance(
                 user_location[0],
@@ -58,13 +58,13 @@ class RestaurantListView(APIView):
                 restaurant_location[1],
             )
             if distance <= range_km:
-                restaurant.distance = distance  #거리내에
+                restaurant.distance = distance  # 거리내에
                 filtered_restaurants.append(restaurant)
 
         # 정렬
         if sort_by == "rating":
             filtered_restaurants.sort(key=lambda x: x.rating, reverse=True)
-        else:  #거리순 정렬
+        else:  # 거리순 정렬
             filtered_restaurants.sort(key=lambda x: x.distance)
 
         serializer = RestaurantListSerializer(filtered_restaurants, many=True)

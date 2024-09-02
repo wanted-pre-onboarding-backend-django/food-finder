@@ -31,6 +31,31 @@ SECRET_KEY=your-secret-key
 ```
 
 
+### Docker를 이용한 개발 환경 구성
+
+1. 아래 환경변수를 .env파일에 추가로 넣어주세요.
+
+```
+# DOCKERIZE SETTINGS
+# PORT=1234
+# USE_DOCKER=True
+
+## POSTGRES SETTINGS
+POSTGRES_DB=postgres
+POSTGRES_NAME=postgres
+POSTGRES_PORT=5123
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+# CELERY
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=redis://redis:6379/1
+
+```
+
+2. `docker-compose up -d --build`
+
+
 ### 개발 명령어 모음
 
 ```shell
