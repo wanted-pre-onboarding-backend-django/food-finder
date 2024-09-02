@@ -50,34 +50,40 @@ services:
       - webnet
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
-# TODO: Celery 구현 시 주석 삭제
-#  # Celery Worker
-#  celery_worker:
-#    image: food-finder-v1
-#    command: celery -A config worker --loglevel=info
-#    volumes:
-#      - static_volume:/app/src/staticfiles
-#    env_file:
-#      - .env
-#    depends_on:
-#      - redis
-#      - db
-#    networks:
-#      - webnet
-#
-#  # Celery Beat
-#  celery_beat:
-#    image: food-finder-v1
-#    command: celery -A config beat --loglevel=info
-#    volumes:
-#      - static_volume:/app/src/staticfiles
-#    env_file:
-#      - .env
-#    depends_on:
-#      - redis
-#      - db
-#    networks:
-#      - webnet
+  # Celery Worker
+  celery_worker:
+    container_name: celery-worker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: pipenv run celery -A config worker --loglevel=info
+    volumes:
+      - ./src/staticfiles:/app/src/staticfiles/
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - webnet
+
+  # Celery Beat
+  celery_beat:
+    container_name: celery-beat
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "pipenv run celery -A config beat --loglevel=info"
+    volumes:
+      - ./src/staticfiles:/app/src/staticfiles/
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - webnet
+
   # Nginx 웹 서버
   nginx:
     image: nginx:latest
