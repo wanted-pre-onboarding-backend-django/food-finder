@@ -59,7 +59,7 @@ Scheduler: APScheduler
 
 <details>
 <summary>Directory Structure</summary>
-<div markdown="1">
+
 ```
 ├── .env
 ├── .flake8
@@ -73,107 +73,107 @@ Scheduler: APScheduler
 ├── docker-compose.yml
 ├── nginx.conf
 ├── src
-│   ├── config
-│   │   ├── __init__.py
-│   │   ├── apps.py
-│   │   ├── asgi.py
-│   │   ├── authentication.py
-│   │   ├── models.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
-│   ├── manage.py
-│   ├── province
-│   │   ├── __init__.py
-│   │   ├── admin
-│   │   │   ├── __init__.py
-│   │   │   └── province_admin.py
-│   │   ├── apps.py
-│   │   ├─+ migrations
-│   │   ├── models
-│   │   │   ├── __init__.py
-│   │   │   └── province.py
-│   │   ├── serializers
-│   │   │   ├── __init__.py
-│   │   │   └── province_serializers.py
-│   │   ├── urls.py
-│   │   └── views
-│   │       ├── __init__.py
-│   │       └── province_list_view.py
-│   ├── restaurant
-│   │   ├── __init__.py
-│   │   ├── admin
-│   │   │   ├── __init__.py
-│   │   │   ├── raw_data_restaurant.py
-│   │   │   └── restaurant_admin.py
-│   │   ├── apps.py
-│   │   ├─+ migrations
-│   │   ├── models
-│   │   │   ├── __init__.py
-│   │   │   ├── raw_data_restaurant.py
-│   │   │   └── restaurant.py
-│   │   ├── serializers
-│   │   │   ├── __init__.py
-│   │   │   ├── restaurant_detail_serializer.py
-│   │   │   └── restaurant_list_serializer.py
-│   │   ├── urls.py
-│   │   ├── utils
-│   │   │   ├── discord_webhook.py
-│   │   │   ├── geo_distance.py
-│   │   │   └── lunch_recommender.py
-│   │   └── views
-│   │       ├── __init__.py
-│   │       ├── restaurant_detail_view.py
-│   │       └── restaurant_list_view.py
-│   ├── review
-│   │   ├── __init__.py
-│   │   ├── admin
-│   │   │   ├── __init__.py
-│   │   │   └── review_admin.py
-│   │   ├── apps.py
-│   │   ├─+ migrations
-│   │   ├── models
-│   │   │   ├── __init__.py
-│   │   │   └── review.py
-│   │   ├── serializers
-│   │   │   ├── __init__.py
-│   │   │   └── review_serializer.py
-│   │   ├── tests
-│   │   │   └── __init__.py
-│   │   ├── urls.py
-│   │   ├── utils
-│   │   │   └── update_restaurant_rating.py
-│   │   └── views
-│   │       ├── __init__.py
-│   │       └── review_view.py
-│   ├── script
-│   │   ├── data_collection.py
-│   │   ├── data_preprocessing.py
-│   │   └── lunch_rec_scheduler.py
-│   └── user
-│       ├── __init__.py
-│       ├── admin
-│       │   ├── __init__.py
-│       │   └── user_admin.py
-│       ├── apps.py
-│       ├─+ migrations
-│       ├── models
-│       │   ├── __init__.py
-│       │   └── user.py
-│       ├── serializers
-│       │   ├── __init__.py
-│       │   ├── user_serializer.py
-│       │   └── user_signup_serializer.py
-│       ├── tests.py
-│       ├── urls.py
-│       └── views
-│           ├── __init__.py
-│           ├── user_login_view.py
-│           ├── user_logout_view.py
-│           ├── user_me_view.py
-│           └── user_signup_view.py
+│   ├── config
+│   │   ├── __init__.py
+│   │   ├── apps.py
+│   │   ├── asgi.py
+│   │   ├── authentication.py
+│   │   ├── models.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── manage.py
+│   ├── province
+│   │   ├── __init__.py
+│   │   ├── admin
+│   │   │   ├── __init__.py
+│   │   │   └── province_admin.py
+│   │   ├── apps.py
+│   │   ├── migrations
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   └── province.py
+│   │   ├── serializers
+│   │   │   ├── __init__.py
+│   │   │   └── province_serializers.py
+│   │   ├── urls.py
+│   │   └── views
+│   │       ├── __init__.py
+│   │       └── province_list_view.py
+│   ├── restaurant
+│   │   ├── __init__.py
+│   │   ├── admin
+│   │   │   ├── __init__.py
+│   │   │   ├── raw_data_restaurant.py
+│   │   │   └── restaurant_admin.py
+│   │   ├── apps.py
+│   │   ├── migrations
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   ├── raw_data_restaurant.py
+│   │   │   └── restaurant.py
+│   │   ├── serializers
+│   │   │   ├── __init__.py
+│   │   │   ├── restaurant_detail_serializer.py
+│   │   │   └── restaurant_list_serializer.py
+│   │   ├── urls.py
+│   │   ├── utils
+│   │   │   ├── discord_webhook.py
+│   │   │   ├── geo_distance.py
+│   │   │   └── lunch_recommender.py
+│   │   └── views
+│   │       ├── __init__.py
+│   │       ├── restaurant_detail_view.py
+│   │       └── restaurant_list_view.py
+│   ├── review
+│   │   ├── __init__.py
+│   │   ├── admin
+│   │   │   ├── __init__.py
+│   │   │   └── review_admin.py
+│   │   ├── apps.py
+│   │   ├── migrations
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   └── review.py
+│   │   ├── serializers
+│   │   │   ├── __init__.py
+│   │   │   └── review_serializer.py
+│   │   ├── tests
+│   │   │   └── __init__.py
+│   │   ├── urls.py
+│   │   ├── utils
+│   │   │   └── update_restaurant_rating.py
+│   │   └── views
+│   │       ├── __init__.py
+│   │       └── review_view.py
+│   ├── script
+│   │   ├── data_collection.py
+│   │   ├── data_preprocessing.py
+│   │   └── lunch_rec_scheduler.py
+│   └── user
+│       ├── __init__.py
+│       ├── admin
+│       │   ├── __init__.py
+│       │   └── user_admin.py
+│       ├── apps.py
+│       ├── migrations
+│       ├── models
+│       │   ├── __init__.py
+│       │   └── user.py
+│       ├── serializers
+│       │   ├── __init__.py
+│       │   ├── user_serializer.py
+│       │   └── user_signup_serializer.py
+│       ├── tests.py
+│       ├── urls.py
+│       └── views
+│           ├── __init__.py
+│           ├── user_login_view.py
+│           ├── user_logout_view.py
+│           ├── user_me_view.py
+│           └── user_signup_view.py
 ```
-</div>
+
 </details>
 
 ### Setting Guide (Docker)
