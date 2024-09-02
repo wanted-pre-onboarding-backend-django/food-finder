@@ -49,8 +49,8 @@ Scheduler: APScheduler
 |                | - Discord                                                    |
 
 ### ERD
-<img width="200" alt="Screenshot 2024-09-02 at 9 37 04 PM" src="https://github.com/user-attachments/assets/d51df5ea-46fa-4fa2-b9d0-0d80b1f1f321">
-<img width="180" alt="Screenshot 2024-09-02 at 9 36 48 PM" src="https://github.com/user-attachments/assets/e7dcad85-c4f3-4d27-88ca-3d002c8f5681">
+<img width="900" alt="Screenshot 2024-09-02 at 9 45 02 PM" src="https://github.com/user-attachments/assets/e51d91f5-878e-441b-be86-1750a06ce545">
+<img width="200" alt="Screenshot 2024-09-02 at 9 36 48 PM" src="https://github.com/user-attachments/assets/70f3d423-356a-4a9f-a0db-b9959abfc211">
 
 
 ### Service Architecture
