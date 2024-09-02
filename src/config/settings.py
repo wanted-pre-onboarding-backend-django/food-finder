@@ -59,6 +59,8 @@ PROJECT_APPS = [
 PACKAGE_APPS = [
     "rest_framework",
     "drf_yasg",
+    "django_celery_beat",
+    "django_celery_results",
 ]
 
 # Combine all apps into a single list
@@ -186,3 +188,10 @@ CACHES = {
         },
     }
 }
+
+
+# celery 설정
+CELERY_BROKER_URL = env("REDIS_URL")
+CELERY_RESULT_BACKEND = env("REDIS_URL")
+CELERY_TIMEZONE = 'Asia/Seoul'
+CELERY_ENABLE_UTC = False
