@@ -3,29 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from restaurant.models import Restaurant
 from restaurant.serializers import RestaurantListSerializer
-import math
-
-
-def calculate_distance(lat1, lon1, lat2, lon2):
-    R = 6371  # 지구의 반지름
-
-    # 위도와 경도를 라디안으로
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-    delta_phi = math.radians(lat2 - lat1)
-    delta_lambda = math.radians(lon2 - lon1)
-
-    # Haversine 공식
-    a = (
-        math.sin(delta_phi / 2) ** 2
-        + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
-    )
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-
-    # 두점 사이의 거리
-    distance = R * c
-
-    return distance
+from restaurant.utils.geo_distance import calculate_distance
 
 
 class RestaurantListView(APIView):
@@ -42,11 +20,11 @@ class RestaurantListView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # 사용자 위치 float로
+        # 사용자 위치를 float로 변환
         user_location = (float(lat), float(lon))
         restaurants = Restaurant.objects.all()
 
-        # 거리 계산하여 범위 내필터링
+        # 거리 계산하여 범위 내 식당 필터링
         filtered_restaurants = []
         for restaurant in restaurants:
             # lat, lon을 float으로

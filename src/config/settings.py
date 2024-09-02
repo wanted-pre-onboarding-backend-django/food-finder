@@ -26,6 +26,7 @@ env = environ.Env()
 env.read_env(f"{BASE_DIR}/.env")
 
 SECRET_KEY = env("SECRET_KEY")
+DISCORD_WEBHOOK_URL = env("DISCORD_WEBHOOK_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +49,7 @@ DJANGO_APPS = [
 # Apps defined within the project
 PROJECT_APPS = [
     "user.apps.UserConfig",
+    "config.apps.ConfigConfig",
     "restaurant",
     "province",
     "review",
@@ -174,11 +176,11 @@ REST_FRAMEWORK = {
 }
 
 
-# 로컬 Redis 연결
+# 컨테이너 Redis 캐시 설정
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://{env('REDIS_HOST', default='localhost')}:{env('REDIS_PORT', default='6379')}/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
