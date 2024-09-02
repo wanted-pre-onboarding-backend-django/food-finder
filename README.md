@@ -49,7 +49,100 @@ Scheduler: APScheduler
 |                | - Discord                                                    |
 
 ### ERD
-추가예정
++---------------------------+
+|           User            |
++---------------------------+
+| id (PK)                   |
+| account (Unique)          |
+| email (Unique)            |
+| password                  |
+| is_active                 |
+| is_staff                  |
+| is_superuser              |
+| is_lunch_rec_allowed      |
+| latitude                  |
+| longitude                 |
+| created_at                |
+| updated_at                |
++---------------------------+
+         |
+         | 1:N
+         |
++---------------------------+
+|          Review           |
++---------------------------+
+| id (PK)                   |
+| user_id (FK)              |
+| restaurant_id (FK)        |
+| score                     |
+| content                   |
+| created_at                |
+| updated_at                |
++---------------------------+
+         |
+         | N:1
+         |
++---------------------------+
+|        Restaurant         |
++---------------------------+
+| id (PK)                   |
+| unique_code (Unique)      |
+| category                  |
+| province_id (FK)          |
+| name                      |
+| status                    |
+| road_addr                 |
+| lot_addr                  |
+| lat                       |
+| lon                       |
+| rating                    |
+| created_at                |
+| updated_at                |
++---------------------------+
+         |
+         | N:1
+         |
++---------------------------+
+|         Province          |
++---------------------------+
+| id (PK)                   |
+| city                      |
+| lat                       |
+| lon                       |
+| created_at                |
+| updated_at                |
++---------------------------+
+
++---------------------------+
+|      RdRestaurant         |
++---------------------------+
+| id (PK)                   |
+| sigun_nm                  |
+| sigun_cd                  |
+| bizplc_nm                 |
+| licensg_de                |
+| bsn_state_nm              |
+| clsbiz_de                 |
+| locplc_ar                 |
+| grad_faclt_div_nm         |
+| male_enflpsn_cnt          |
+| yy                        |
+| multi_use_bizestbl_yn     |
+| grad_div_nm               |
+| tot_faclt_scale           |
+| female_enflpsn_cnt        |
+| bsnsite_circumfr_div_nm   |
+| sanittn_indutype_nm       |
+| sanittn_bizcond_nm        |
+| tot_emply_cnt             |
+| refine_lotno_addr         |
+| refine_roadnm_addr        |
+| refine_zip_cd             |
+| refine_wgs84_logt         |
+| refine_wgs84_lat          |
+| created_at                |
+| updated_at                |
++---------------------------+
 
 ### Service Architecture
 ![Food Finder Structure](https://github-production-user-asset-6210df.s3.amazonaws.com/64644262/363665582-f9eb04cd-ed59-4608-840d-f8bddc3a23fe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240902T113549Z&X-Amz-Expires=300&X-Amz-Signature=4fcefdc59f0000e8f71a9d12072b3164c077b0212e9ee4e1270603a354ced840&X-Amz-SignedHeaders=host&actor_id=64644262&key_id=0&repo_id=844917575)
