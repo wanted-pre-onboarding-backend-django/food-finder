@@ -182,7 +182,7 @@ REST_FRAMEWORK = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{env('REDIS_HOST', default='localhost')}:{env('REDIS_PORT', default='6379')}/2",
+        "LOCATION": f"redis://{env('REDIS_HOST', default='redis')}:{env('REDIS_PORT', default='6379')}/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -193,5 +193,5 @@ CACHES = {
 # celery 설정
 CELERY_BROKER_URL = env("REDIS_URL")
 CELERY_RESULT_BACKEND = env("REDIS_URL")
-CELERY_TIMEZONE = 'Asia/Seoul'
+CELERY_TIMEZONE = "Asia/Seoul"
 CELERY_ENABLE_UTC = False
