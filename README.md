@@ -52,7 +52,8 @@ Scheduler: APScheduler
 ![ERD](https://github.com/user-attachments/assets/f8c8206e-18c6-43cc-8057-dbf455dbaa18)
 
 ### Service Architecture
-![Food Finder Structure](https://private-user-images.githubusercontent.com/64644262/363689166-26fcb683-a2e0-46e6-b70a-299910fa48c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjUyODA3NDYsIm5iZiI6MTcyNTI4MDQ0NiwicGF0aCI6Ii82NDY0NDI2Mi8zNjM2ODkxNjYtMjZmY2I2ODMtYTJlMC00NmU2LWI3MGEtMjk5OTEwZmE0OGM5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA5MDIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwOTAyVDEyMzQwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMzODViYjZkMmNiODQ5Njc3MDdkZDMyZDNmOWZhYWEzNzkyZWVkNjY1ZGZiMjdmODc2YzU5ZWZjOGExM2IyYjAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.hDEEHm1Ezp-V0NM9afn6yV3ZvZfttTmvnoElyWwrKIU)
+<img width="818" alt="Screenshot 2024-09-03 at 9 32 23 AM" src="https://github.com/user-attachments/assets/109a45ad-e49f-4ec8-beae-37a57ca9473c">
+
 
 
 ### 디렉토리 구조
