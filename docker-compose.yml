@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Django 애플리케이션
@@ -14,7 +14,9 @@ services:
       args:
         - DEV=true
     command: >
-      bash -c "pipenv run python manage.py migrate && pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+      bash -c "pipenv run python manage.py migrate &&
+              pipenv run python /app/src/script/insert_province_data.py &&
+              pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./static:/app/src/staticfiles/
     ports:
