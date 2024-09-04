@@ -5,7 +5,7 @@
 
 > 언어 및 프레임워크 : Python 3.10 & Django 5.0, DRF 3.15
 RDBMS: PostgreSQL 16.0 \
-Server: Nginx, Uvicorn, Gunicorn\
+Server: Nginx, Gunicorn\
 ETC Tools: Docker(Compose), Git & Github, Notion, Discord
 Cache & Messaging: Redis
 Task Queue: Celery
@@ -39,7 +39,6 @@ Scheduler: APScheduler
 | DB         | - PostgreSQL 16.0                                            |
 |                | - Redis                                                      |
 | Server     | - Nginx                                                      |
-|                | - Uvicorn                                                    |
 |                | - Gunicorn                                                   |
 | Task Queue & Scheduler | - Celery                                          |
 |                | - APScheduler                                                |
@@ -52,8 +51,7 @@ Scheduler: APScheduler
 ![ERD](https://github.com/user-attachments/assets/f8c8206e-18c6-43cc-8057-dbf455dbaa18)
 
 ### Service Architecture
-<img width="818" alt="Screenshot 2024-09-03 at 9 32 23 AM" src="https://github.com/user-attachments/assets/109a45ad-e49f-4ec8-beae-37a57ca9473c">
-
+<img width="819" alt="image" src="https://github.com/user-attachments/assets/83dcb8dd-a5b7-4d79-8440-e1a856fb4e03">
 
 
 ### 디렉토리 구조
