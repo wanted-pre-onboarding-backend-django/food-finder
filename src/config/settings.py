@@ -108,7 +108,7 @@ DATABASES = {
         "NAME": env("POSTGRES_DB", default="foodfinderdb"),
         "USER": env("POSTGRES_USER", default="postgres"),
         "PASSWORD": env("POSTGRES_PASSWORD", default="password"),
-        "HOST": env("POSTGRESQL_HOST", default="postgres"),
+        "HOST": env("POSTGRES_HOST", default="postgres"),
         "PORT": env("POSTGRES_PORT"),
         "TEST": {
             "NAME": "mytestdb",
