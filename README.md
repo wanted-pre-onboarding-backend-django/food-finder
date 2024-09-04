@@ -181,12 +181,7 @@ Scheduler: APScheduler
 * 루트 디렉토리에 `.env` 밑처럼 세팅
 ```
 SECRET_KEY= // 자체 입력
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/   #디스코드 팀채널에서 복사하세요 
-TZ=Asia/Seoul
-
-# DOCKERIZE SETTINGS
-# PORT=1234
-# USE_DOCKER=True
+API_KEY= //자체입력
 
 ## POSTGRES SETTINGS
 POSTGRES_DB=postgres
@@ -197,11 +192,16 @@ POSTGRES_PASSWORD=postgres
 
 # REDIS
 REDIS_PORT=6379
-REDIS_URL=redis://redis:6379/0
 
 # CELERY
-CELERY_BROKER_URL=redis://redis:6379/0
-CELERY_RESULT_BACKEND=redis://redis:6379/1
+REDIS_URL=redis://redis:6379/0
+CELERY_BROKER_URL=redis://redis:6379
+CELERY_RESULT_BACKEND=redis://redis:6379
+
+# ETC
+TZ=Asia/Seoul
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks //자체입력
+
 
 ```
 
